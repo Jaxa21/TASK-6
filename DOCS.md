@@ -19,12 +19,12 @@ SELECT * FROM faker.fake_users('pl_PL', 42, 1);   -- next 10
 | `fake_users(locale, seed, batch, size = 10)` | `locale text`, `seed bigint`, `batch bigint ≥ 0`, `size int` 1–100,000 | `pos`, `full_name`, `gender`, `address`, `latitude`, `longitude`, `height_cm`, `weight_kg`, `eye_color`, `hair_color`, `phone`, `email` |
 | `benchmark(locale, users = 10000)` | `locale text`, `users int` | `users`, `seconds`, `users_per_second` |
 
-**Reproducibility.** For every person, `fake_users` calls `setseed(person_seed(locale, seed, position))`. All later values come from `random()` in a fixed order, so the same locale, seed, batch and index always give the same person.
+**Reproducibility.** For every person, `fake_users` calls `setseed(person_seed(locale, seed, position))`. All later values come from `random()` in a fixed order, so the same locale, seed, batch and index always give the same output.
 
 ## Helper procedures
 
 All helpers use `random()`. 
-`setseed(x)` can be use first to repeat a result.
+`setseed(x)` can be use to repeat a result.
 
 | Procedure | Description |
 |---|---|
@@ -49,7 +49,7 @@ All helpers use `random()`.
 
 ## Algorithms
 
-**Normal distribution (Box–Muller).** For uniform u₁, u₂: `z = sqrt(−2 ln u₁) · cos(2π u₂)` is N(0, 1), and `x = mean + sd · z`. Mean and sd come from `body_stats` per locale and gender.
+**Normal distribution (Box–Muller).** For uniform u₁, u₂: `z = sqrt(−2 ln u₁) · cos(2π u₂)` is N(0, 1), and `x = mean + sd · z`. Mean and sd al calculated from `body_stats` per locale and gender.
 
 **Uniform points on the sphere.** The area between two latitudes is proportional to the difference of their sines, so sin(latitude) must be uniform: `latitude = asin(2u₁ − 1)`, `longitude = 360u₂ − 180`.
 
